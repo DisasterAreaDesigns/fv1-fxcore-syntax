@@ -1,0 +1,313 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FXCore",
+  "scopeName": "source.fxcore",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#directives"
+    },
+    {
+      "include": "#labels"
+    },
+    {
+      "include": "#jumps"
+    },
+    {
+      "include": "#instructions"
+    },
+    {
+      "include": "#registers"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#strings"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.fxcore",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.begin.fxcore"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.end.fxcore"
+            }
+          },
+          "patterns": [
+            {
+              "match": "(?i)#SLOT(1[0-5]|[0-9])\\b",
+              "name": "entity.name.function.fxcore"
+            },
+            {
+              "match": "(?i)#(pot[0-5]|sw[0-4]|tap)\\b",
+              "name": "entity.name.tag.fxcore"
+            }
+          ]
+        },
+        {
+          "name": "comment.line.semicolon.fxcore",
+          "begin": ";",
+          "end": "$",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.fxcore"
+            }
+          },
+          "patterns": [
+            {
+              "match": "(?i)#SLOT(1[0-5]|[0-9])\\b",
+              "name": "entity.name.function.fxcore"
+            },
+            {
+              "match": "(?i)#(pot[0-5]|sw[0-4]|tap)\\b",
+              "name": "entity.name.tag.fxcore"
+            }
+          ]
+        },
+        {
+          "name": "comment.line.double-slash.fxcore",
+          "begin": "//",
+          "end": "$",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.fxcore"
+            }
+          },
+          "patterns": [
+            {
+              "match": "(?i)#SLOT(1[0-5]|[0-9])\\b",
+              "name": "entity.name.function.fxcore"
+            },
+            {
+              "match": "(?i)#(pot[0-5]|sw[0-4]|tap)\\b",
+              "name": "entity.name.tag.fxcore"
+            }
+          ]
+        }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "match": "(?i)(\\.(?:creg|mreg|sreg|equ|mem|rn))\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.directive.fxcore"
+            }
+          }
+        }
+      ]
+    },
+    "labels": {
+      "patterns": [
+        {
+          "match": "^\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*:",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.fxcore"
+            }
+          }
+        }
+      ]
+    },
+    "jumps": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(jmp)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.flow.jump.fxcore"
+            },
+            "2": {
+              "name": "entity.name.function.fxcore"
+            }
+          }
+        },
+        {
+          "begin": "(?i)\\b(jgez|jneg|jnz|jzc|jz)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.flow.jump.conditional.fxcore"
+            }
+          },
+          "end": "$",
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#registers"
+            },
+            {
+              "include": "#constants"
+            },
+            {
+              "include": "#numbers"
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.fxcore"
+            },
+            {
+              "match": "[A-Za-z_][A-Za-z0-9_]*",
+              "name": "entity.name.function.fxcore"
+            }
+          ]
+        }
+      ]
+    },
+    "instructions": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(clracc64|machid|machrd|machri|machrr|multri|multrr|addsi|macid|macrd|macri|macrr|sat64|addi|adds|exp2|log2|slsr|srar|subs|abs|add|neg|slr|sls|sra|srr|sub|sl|sr)\\b",
+          "name": "keyword.operator.word.fxcore"
+        },
+        {
+          "match": "(?i)\\b(cpy_cmx|cpy_cc|cpy_cm|cpy_cs|cpy_mc|cpy_sc)\\b",
+          "name": "keyword.control.transfer.fxcore"
+        },
+        {
+          "match": "(?i)\\b(ldacc64l|ldacc64u|rdacc64l|rdacc64u|rddelx|rddirx|wrdelx|wrdirx|rddel|wrdel|wrdld)\\b",
+          "name": "keyword.operator.memory.fxcore"
+        },
+        {
+          "match": "(?i)\\b(andi|xori|and|inv|ori|xor|or)\\b",
+          "name": "keyword.operator.bitwise.fxcore"
+        },
+        {
+          "match": "(?i)\\b(interp|aprra|aprrb|pitch|apma|apmb|apra|aprb|apa|apb|chr|set)\\b",
+          "name": "support.function.builtin.fxcore"
+        }
+      ]
+    },
+    "registers": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(r[0-9]|r1[0-5]|acc32|flags|acc64|in[0-3]|out[0-3]|pin|switch|pot[0-5]_k|pot[0-5]_smth|pot[0-5]|lfo[0-3]_f|ramp[01]_f|lfo[0-3]_s|lfo[0-3]_c|ramp[01]_r|maxtempo|taptempo|samplecnt|noise|bootstat|tapstkrld|tapdbrld|swdbrld|prgdbrld|oflrld|mr[0-9]|mr[1-9][0-9]|mr1[0-1][0-9]|mr12[0-7])\\b",
+          "name": "variable.language.register.fxcore"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(LFO[0-3]|SIN|COS|POS|NEG|RMP[01]|L512|L1024|L2048|L4096|XF[0-3]|USER[01])\\b",
+          "name": "constant.language.fxcore"
+        },
+        {
+          "match": "(?i)\\b(OUT[0-3]OFLO|IN[0-3]OFLO)\\b",
+          "name": "constant.language.fxcore"
+        },
+        {
+          "match": "(?i)\\b(TB2NTB1|TAPSTKY|NEWTT|TAPRE|TAPPE|TAPLVL)\\b",
+          "name": "constant.language.fxcore"
+        },
+        {
+          "match": "(?i)\\b(SW[0-4](DB|RE|PE)?)\\b",
+          "name": "constant.language.fxcore"
+        },
+        {
+          "match": "(?i)\\b(ENABLEDB?|PLLRANGE[01]|MNS|I2CA[0-6]|TAP)\\b",
+          "name": "constant.language.fxcore"
+        },
+        {
+          "match": "(?i)\\b(PR(1[0-5]|[0-9]))\\b",
+          "name": "constant.language.fxcore"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "begin": "(@)([A-Za-z_.][A-Za-z0-9_]*)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.accessor.fxcore"
+            },
+            "2": {
+              "name": "variable.function.fxcore"
+            },
+            "3": {
+              "name": "punctuation.section.arguments.begin.fxcore"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.arguments.end.fxcore"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#numbers"
+            },
+            {
+              "match": "\\w+",
+              "name": "variable.parameter.fxcore"
+            }
+          ]
+        },
+        {
+          "match": "(@)([A-Za-z_.][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.accessor.fxcore"
+            },
+            "2": {
+              "name": "variable.function.fxcore"
+            }
+          }
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "(?i)\\b0x[0-9a-f]*(\\.[0-9a-f]+p-?\\d+)?",
+          "name": "constant.numeric.hex.fxcore"
+        },
+        {
+          "match": "(?i)\\b\\d+\\.\\d*(e[-+]?\\d+)?|\\b\\.\\d+(e[-+]?\\d+)?",
+          "name": "constant.numeric.float.fxcore"
+        },
+        {
+          "match": "\\b\\d+\\b",
+          "name": "constant.numeric.integer.fxcore"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.fxcore",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.fxcore"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

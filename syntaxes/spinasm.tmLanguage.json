@@ -1,0 +1,241 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SpinASM",
+  "scopeName": "source.spinasm",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#pragmas"
+    },
+    {
+      "include": "#labels"
+    },
+    {
+      "include": "#directives"
+    },
+    {
+      "include": "#skp"
+    },
+    {
+      "include": "#instructions"
+    },
+    {
+      "include": "#extended-instructions"
+    },
+    {
+      "include": "#conditions"
+    },
+    {
+      "include": "#registers"
+    },
+    {
+      "include": "#lfos"
+    },
+    {
+      "include": "#cho-flags"
+    },
+    {
+      "include": "#delay-refs"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#strings"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.semicolon.spinasm",
+          "begin": ";",
+          "end": "$",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.spinasm"
+            }
+          },
+          "patterns": [
+            {
+              "match": "(?i)#SLOT(1[0-5]|[0-9])\\b",
+              "name": "entity.name.function.spinasm"
+            }
+          ]
+        }
+      ]
+    },
+    "pragmas": {
+      "patterns": [
+        {
+          "match": "(?i)^\\s*(#extended)\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.control.directive.pragma.spinasm"
+            }
+          }
+        }
+      ]
+    },
+    "labels": {
+      "patterns": [
+        {
+          "match": "^\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*:",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.spinasm"
+            }
+          }
+        }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(EQU|MEM)\\b",
+          "name": "keyword.declaration.directive.spinasm"
+        }
+      ]
+    },
+    "skp": {
+      "patterns": [
+        {
+          "begin": "(?i)\\b(SKP)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.flow.skip.spinasm"
+            }
+          },
+          "end": "$",
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#conditions"
+            },
+            {
+              "include": "#numbers"
+            },
+            {
+              "match": "[|,]",
+              "name": "punctuation.separator.spinasm"
+            },
+            {
+              "match": "[A-Za-z_][A-Za-z0-9_]*",
+              "name": "entity.name.function.spinasm"
+            }
+          ]
+        }
+      ]
+    },
+    "instructions": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(ABSA|LDAX|MAXX|MULX|RDAX|RDFX|RMPA|WLDR|WLDS|WRAP|WRAX|WRHX|WRLX|AND|CHO|CLR|EXP|JAM|JMP|LOG|NOP|NOT|RAW|RDA|SKP|SOF|WRA|XOR|OR)\\b",
+          "name": "keyword.operator.word.spinasm"
+        }
+      ]
+    },
+    "extended-instructions": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(RMPAX|RAND)\\b",
+          "name": "keyword.operator.word.extended.spinasm"
+        }
+      ]
+    },
+    "conditions": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(GEZ|NEG|RUN|ZRC|ZRO)\\b",
+          "name": "constant.language.condition.spinasm"
+        }
+      ]
+    },
+    "registers": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(RMP0_RANGE|RMP1_RANGE|RMP2_RANGE|RMP3_RANGE|SIN0_RANGE|SIN1_RANGE|SIN2_RANGE|SIN3_RANGE|RMP0_RATE|RMP1_RATE|RMP2_RATE|RMP3_RATE|SIN0_RATE|SIN1_RATE|SIN2_RATE|SIN3_RATE|ADDR_PTR|REG10|REG11|REG12|REG13|REG14|REG15|REG16|REG17|REG18|REG19|REG20|REG21|REG22|REG23|REG24|REG25|REG26|REG27|REG28|REG29|REG30|REG31|ADCL|ADCR|DACL|DACR|POT0|POT1|POT2|POT3|POT4|POT5|REG0|REG1|REG2|REG3|REG4|REG5|REG6|REG7|REG8|REG9)\\b",
+          "name": "variable.language.register.spinasm"
+        }
+      ]
+    },
+    "lfos": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(RMP0|RMP1|RMP2|RMP3|SIN0|SIN1|SIN2|SIN3)\\b",
+          "name": "constant.language.lfo.spinasm"
+        }
+      ]
+    },
+    "cho-flags": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(COMPA|COMPC|RPTR2|RDAL|COS|RDA|REG|SIN|SOF|NA)\\b",
+          "name": "constant.language.spinasm"
+        }
+      ]
+    },
+    "delay-refs": {
+      "patterns": [
+        {
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)([#^$])",
+          "captures": {
+            "1": {
+              "name": "variable.other.delay.spinasm"
+            },
+            "2": {
+              "name": "keyword.operator.delay.spinasm"
+            }
+          }
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "\\$[0-9a-fA-F_]+",
+          "name": "constant.numeric.hex.spinasm"
+        },
+        {
+          "match": "%[01_]+",
+          "name": "constant.numeric.binary.spinasm"
+        },
+        {
+          "match": "(?i)\\b0x[0-9a-f_]+\\b",
+          "name": "constant.numeric.hex.spinasm"
+        },
+        {
+          "match": "(?i)\\b0b[01_]+\\b",
+          "name": "constant.numeric.binary.spinasm"
+        },
+        {
+          "match": "(?i)\\b\\d+\\.\\d*(e[-+]?\\d+)?|\\b\\.\\d+(e[-+]?\\d+)?",
+          "name": "constant.numeric.float.spinasm"
+        },
+        {
+          "match": "\\b\\d+\\b",
+          "name": "constant.numeric.integer.spinasm"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.spinasm",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.spinasm"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "fv1-fxcore-syntax",
+  "displayName": "FV-1 and FXCore DSP assembly",
+  "description": "Syntax highlighting for SpinASM (.spn) and FXCore (.fxc) DSP assembly.",
+  "version": "0.1.0",
+  "publisher": "DisasterAreaDesigns",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "spinasm",
+        "aliases": [
+          "SpinASM",
+          "FV-1",
+          "spinasm"
+        ],
+        "extensions": [
+          ".spn"
+        ],
+        "configuration": "./language-configuration-spinasm.json"
+      },
+      {
+        "id": "fxcore",
+        "aliases": [
+          "FXCore",
+          "fxcore"
+        ],
+        "extensions": [
+          ".fxc",
+          ".fxo",
+          ".fxl"
+        ],
+        "configuration": "./language-configuration-fxcore.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "spinasm",
+        "scopeName": "source.spinasm",
+        "path": "./syntaxes/spinasm.tmLanguage.json"
+      },
+      {
+        "language": "fxcore",
+        "scopeName": "source.fxcore",
+        "path": "./syntaxes/fxcore.tmLanguage.json"
+      }
+    ]
+  }
+}
