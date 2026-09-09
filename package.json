@@ -51,5 +51,9 @@
         "path": "./syntaxes/fxcore.tmLanguage.json"
       }
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DisasterAreaDesigns/fv1-fxcore-syntax.git"
   }
 }
